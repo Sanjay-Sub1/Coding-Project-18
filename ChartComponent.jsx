@@ -1,23 +1,33 @@
 import React, { useEffect, useRef } from 'react';
-import Chart from 'chart.js/auto';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
 const ChartComponent = ({ type, data, options }) => {
   const chartRef = useRef(null);
-  const chartInstanceRef = useRef(null);
 
   useEffect(() => {
-    const ctx = chartRef.current.getContext('2d');
-    chartInstanceRef.current = new Chart(ctx, {
-      type,data,options,});
+    if (chartRef.current) {
+      if (chartRef.current.chart) {
+        chartRef.current.chart.destroy();
+      }
+    }
+
+    const chart = new ChartJS(chartRef.current, {
+      type: type,
+      data: data,
+      options: options
+    });
+
+    chartRef.current.chart = chart;
 
     return () => {
-      if (chartInstanceRef.current) {
-        chartInstanceRef.current.destroy();
-        chartInstanceRef.current = null;
+      if (chartRef.current.chart) {
+        chartRef.current.chart.destroy();
       }
     };
-  }, [type, data, options]);
+  }, [data, options, type]);
 
-  return <canvas ref={chartRef}></canvas>;
+  return <canvas ref={chartRef} />;
 };
+
 export default ChartComponent;
+

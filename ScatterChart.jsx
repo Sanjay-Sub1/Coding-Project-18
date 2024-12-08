@@ -1,34 +1,39 @@
-import React from 'react';
-import ChartComponent from './ChartComponent';
+import React from "react";
+import ChartComponent from "./ChartComponent";
 
-const ScatterChart = () => {
-  const data = {
+const ScatterChart = ({ data }) => {
+  const chartData = {
     datasets: [
       {
-        label: 'Expenses vs. Profits',
-        data: [
-          { x: 10, y: 20 },
-          { x: 15, y: 25 },
-          { x: 20, y: 30 },
-          { x: 25, y: 35 },
-        ],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        label: "Expenses vs Profits",
+        data: data.expenses.map((expense, index) => ({
+          x: expense,
+          y: data.profits[index],
+        })),
+        backgroundColor: "rgba(255, 99, 132, 1)",
       },
     ],
   };
 
   const options = {
     responsive: true,
-    plugins: {
-      legend: { position: 'top' },
-    },
     scales: {
-      x: { title: { display: true, text: 'Expenses' } },
-      y: { title: { display: true, text: 'Profits' } },
+      x: {
+        title: {
+          display: true,
+          text: "Expenses",
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Profits",
+        },
+      },
     },
   };
 
-  return <ChartComponent type="scatter" data={data} options={options} />;
+  return <ChartComponent type="scatter" data={chartData} options={options} />;
 };
 
 export default ScatterChart;
